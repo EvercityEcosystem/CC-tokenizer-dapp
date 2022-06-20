@@ -13,7 +13,13 @@ const Asset = () => {
     await pinProjectToIPFS({ projectId, asset_name: name, serial_number: serialNumber, repaid_count: repaidCount});
   }
   return <Container>
-    <Form onFinish={handlePrepay} disabled={loading}>
+    <Form
+      onFinish={handlePrepay}
+      disabled={loading}
+      labelAlign="left"
+      labelCol={{ span: 10 }}
+      wrapperCol={ {span: 14} }
+    >
       <Form.Item label="Serial number" name="serialNumber">
         <Input />
       </Form.Item>
@@ -23,7 +29,7 @@ const Asset = () => {
       <Form.Item label="Count" name="repaidCount">
         <InputNumber />
       </Form.Item>
-      <Form.Item>
+      <Form.Item wrapperCol={ {span: 24} }>
         <Button htmlType="submit" block type="primary">
           Prepay
         </Button>

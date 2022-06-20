@@ -48,7 +48,7 @@ const Asset = () => {
       </Form.Item>
       <Form.Item wrapperCol={ {span: 24} }>
         <Button htmlType="submit" block type="primary">
-          Prepay
+          Save file
         </Button>
       </Form.Item>
     </Form>

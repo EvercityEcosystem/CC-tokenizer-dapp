@@ -11,9 +11,10 @@ import RoleRouter from "./components/RoleRouter/RoleRouter";
 import CustodianRequests from "./pages/CustodianRequests/CustodianRequests";
 import CustodianTokens from "./pages/CustodianTokens/CustodianTokens";
 import CustodianReporting from "./pages/CustodianReporting/CustodianReporting";
-import CustodianProjects from "./pages/CustodianProjects/CustodianProjects";
+import Assets from "./pages/Assets/Assets";
 import InvestorTokens from "./pages/InvestorTokens/InvestorTokens";
 import Profile from "./pages/Profile/Profile";
+import Asset from "./pages/Asset/Asset";
 
 function App() {
   const { initAPI, isAPIReady } = usePolkadot();
@@ -30,11 +31,14 @@ function App() {
           <Route path="logout" element={<Logout />}/>
           <Route path="dapp" children={<ProtectedRouter />}>
             <Route path="profile" element={<Profile />} />
+            <Route path="assets">
+              <Route index element={<Assets />} />
+              <Route path=":name" element={<Asset />}/>
+            </Route>
             <Route path="custodian" element={<RoleRouter roles={[2]} />}>
               <Route path="requests" element={<CustodianRequests />} />
               <Route path="tokens/:actionType" element={<CustodianTokens />} />
               <Route path="reporting" element={<CustodianReporting />} />
-              <Route path="projects" element={<CustodianProjects />} />
             </Route>
             <Route path="investor" element={<RoleRouter roles={[8]} />}>
               <Route path="tokens/:action" element={<InvestorTokens />} />

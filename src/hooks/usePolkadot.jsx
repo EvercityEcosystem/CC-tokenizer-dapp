@@ -6,9 +6,11 @@ import {notification} from "antd";
 import {fromEverUSD, toEverUSD} from "../utils/converters";
 import {transactionCallback} from "../utils/notify";
 import {getCurrentUser} from "../utils/storage";
+import {useNavigate} from "react-router-dom";
 
 const usePolkadot = () => {
   const { polkadotState, dispatch } = useContext(store);
+  const navigate = useNavigate();
   const { api, injector } = polkadotState;
 
   const isAPIReady = useMemo(
@@ -305,6 +307,16 @@ const usePolkadot = () => {
     return fromEverUSD(balance);
   }, [api]);
 
+  const requestNewAsset = useCallback(
+    async () => {
+      const name = "new_asset";
+      notification.success({
+        message: `Asset ${name} was created`,
+        description: <div>Please, go to <a target="__blank" href='https://www.ecoregistry.io/projects'>registry</a> for repay.</div>
+      });
+      navigate(`${name}`);
+  }, [navigate]);
+
   return { dayDuration, initAPI, isAPIReady, accountRegistry,  requestMintTokens,
     revokeMintTokens,
     requestBurnTokens,
@@ -312,7 +324,8 @@ const usePolkadot = () => {
     checkMintRequest, checkBurnRequest,
     totalSupplyEverUSD,
     confirmEverusdRequest, declineEverusdRequest,
-    fetchBalance
+    fetchBalance,
+    requestNewAsset
   };
 };
 

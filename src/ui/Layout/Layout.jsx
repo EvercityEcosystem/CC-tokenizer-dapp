@@ -83,10 +83,6 @@ const getRoutesByRole = role => {
         {
           path: "/dapp/custodian/reporting",
           title: "Reporting",
-        },
-        {
-          path: "/dapp/custodian/projects",
-          title: "Projects"
         }
       ];
 
@@ -180,6 +176,10 @@ const Layout = ({ children }) => {
       path: "/dapp/events",
       title: "Events",
       disabled: true,
+    },
+    {
+      path: "/dapp/assets",
+      title: "Assets"
     },
     ...getRoutesByRole(role),
   ];

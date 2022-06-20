@@ -10,7 +10,12 @@ const Asset = () => {
   const { pinProjectToIPFS, loading, url } = useEcoRegistry();
 
   const handlePrepay = async ({projectId, serialNumber, repaidCount }) => {
-    await pinProjectToIPFS({ projectId, asset_name: name, serial_number: serialNumber, repaid_count: repaidCount});
+    await pinProjectToIPFS({
+      projectId,
+      asset_name: name,
+      serial_number: serialNumber,
+      repaid_count: repaidCount
+    });
   }
   return <Container>
     <Form
@@ -20,13 +25,25 @@ const Asset = () => {
       labelCol={{ span: 10 }}
       wrapperCol={ {span: 14} }
     >
-      <Form.Item label="Serial number" name="serialNumber">
+      <Form.Item label="Serial number" name="serialNumber" required rules={[
+        {
+          required: true
+        }
+      ]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Project ID" name="projectId">
+      <Form.Item label="Project ID" name="projectId" required rules={[
+        {
+          required: true
+        }
+      ]}>
         <InputNumber />
       </Form.Item>
-      <Form.Item label="Count" name="repaidCount">
+      <Form.Item label="Count" name="repaidCount" required rules={[
+        {
+          required: true
+        }
+      ]}>
         <InputNumber />
       </Form.Item>
       <Form.Item wrapperCol={ {span: 24} }>

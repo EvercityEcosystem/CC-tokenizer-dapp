@@ -10,18 +10,7 @@ import { ROLES } from "../../utils/roles";
 import Container from "../../ui/Container/Container";
 
 const Profile = () => {
-  const { address, role } = getCurrentUser();
-  const [balance, setBalance] = useState();
-  const { fetchBalance } = usePolkadot();
-
-  useEffect(() => {
-    const getBalance = async () => {
-      const res = await fetchBalance(address);
-      setBalance(res.toFixed(2));
-    };
-
-    getBalance();
-  });
+  const { address } = getCurrentUser();
 
   return (
     <Container align="start">
@@ -39,17 +28,6 @@ const Profile = () => {
           }}
         />
       </div>
-      <Statistic
-        className={styles.statistic}
-        title="Role"
-        value={ROLES[role]}
-      />
-      <Statistic
-        className={styles.statistic}
-        suffix="$"
-        title="Account Balance (EVERUSD)"
-        value={balance}
-      />
     </Container>
   );
 };

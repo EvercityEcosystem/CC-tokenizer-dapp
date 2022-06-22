@@ -1,20 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Container from "../../ui/Container/Container";
 import {Button, Form, Input, Spin} from "antd";
 import {useParams} from "react-router-dom";
 import InputNumber from "../../ui/InputNumber/InputNumber";
 import useEcoRegistry from "../../hooks/useEcoRegistry";
+import usePolkadot from "../../hooks/usePolkadot";
 
 const Asset = () => {
-  const { name } = useParams();
+  const { id } = useParams();
+  const [metaInfo, setMetaInfo] = useState();
+  const { fetchMetadataAsset , isAPIReady } = usePolkadot();
   const { pinProjectToIPFS, loading, url } = useEcoRegistry();
 
-  const handlePrepay = async ({projectId, serialNumber, repaidCount }) => {
+  useEffect(() => {
+    if(isAPIReady) {
+      fetchMetadataAsset(id).then(metadata => {
+        setMetaInfo(metadata);
+      });
+    }
+  }, [id, isAPIReady]);
+
+  const handlePrepay = async (values) => {
     await pinProjectToIPFS({
-      projectId,
-      asset_name: name,
-      serial_number: serialNumber,
-      repaid_count: repaidCount
+      asset_id: id,
+      asset_name: metaInfo.name,
+      ...values,
     });
   }
   return <Container>
@@ -22,24 +32,24 @@ const Asset = () => {
       onFinish={handlePrepay}
       disabled={loading}
       labelAlign="left"
-      labelCol={{ span: 10 }}
-      wrapperCol={ {span: 14} }
+      labelCol={{ span: 14 }}
+      wrapperCol={ {span: 10} }
     >
-      <Form.Item label="Serial number" name="serialNumber" required rules={[
+      <Form.Item label="Serial number" name="serial_number" required rules={[
         {
           required: true
         }
       ]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Project ID" name="projectId" required rules={[
+      <Form.Item label="Project ID" name="project_id" required rules={[
         {
           required: true
         }
       ]}>
         <InputNumber />
       </Form.Item>
-      <Form.Item label="Count" name="repaidCount" required rules={[
+      <Form.Item label="Amount of carbon units" name="amount_carbon_units" required rules={[
         {
           required: true
         }

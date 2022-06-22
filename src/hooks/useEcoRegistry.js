@@ -1,5 +1,7 @@
 import {useCallback, useReducer} from "react";
 import {notification} from "antd";
+import { hexToString } from "@polkadot/util";
+import usePolkadot from "./usePolkadot";
 
 const ECOREGISTRY_API = "https://api-front.ecoregistry.io/api";
 const PINATA_URI = "https://api.pinata.cloud";
@@ -22,6 +24,7 @@ const reducer = (state, action) => {
 
 const useEcoRegistry = () => {
   const [{ loading, url }, dispatch] = useReducer(reducer, initialState);
+  const { setProjectData } = usePolkadot();
 
   const fetchProject = useCallback((id) =>
     fetch(`${ECOREGISTRY_API}/project/public/${id}`, {
@@ -54,21 +57,23 @@ const useEcoRegistry = () => {
     })
   , []);
 
-  const pinProjectToIPFS = async ({ projectId, ...values }) => {
+  const pinProjectToIPFS = async ({ project_id, asset_id, ...values }) => {
     dispatch({
       type: "setLoading",
       payload: true
     });
-    const project = await fetchProject(projectId);
+    const projectFromRegistry = await fetchProject(project_id);
 
-    if(project?.codeMessages?.[0]) {
+    if(projectFromRegistry?.codeMessages?.[0]) {
       notification.error({
-        message: project.codeMessages[0].codeMessage
+        message: projectFromRegistry.codeMessages[0].codeMessage
       });
     }
-    await pinJSONToIPFS({...project, ...values});
+    const project = {...projectFromRegistry, ...values};
+    await pinJSONToIPFS(project);
+    await setProjectData({asset_id , url, project });
     notification.success({
-      message: `${values.asset_name} was pined to IPFS`
+      message: `${hexToString(values.asset_name)} was pined to IPFS`
     });
     dispatch({
       type: "setLoading",
@@ -77,8 +82,9 @@ const useEcoRegistry = () => {
   }
 
   return {
-    loading, url,
-    pinProjectToIPFS
+    loading,
+    url,
+    pinProjectToIPFS,
   };
 };
 

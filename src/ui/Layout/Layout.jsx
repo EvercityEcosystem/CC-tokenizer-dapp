@@ -12,146 +12,13 @@ import logoUrl from "/images/logo-header.svg";
 
 const { Sider, Header, Content, Footer } = BaseLayout;
 
-const getRoutesByRole = role => {
-  switch (role) {
-    case 1:
-      return [
-        {
-          path: "/dapp/master/roles",
-          title: "Roles",
-        },
-      ];
-    case 4:
-      return [
-        {
-          title: "Wallet",
-          children: [
-            {
-              path: "/dapp/issuer/tokens/mint",
-              title: "Mint EVERUSD",
-            },
-            {
-              path: "/dapp/issuer/tokens/burn",
-              title: "Burn EVERUSD",
-            },
-          ],
-        },
-        {
-          path: "/dapp/issuer/bond",
-          title: "New Bond",
-        },
-        // {
-        //   path: '/dapp/issuer/impact',
-        //   title: 'Impact',
-        // },
-      ];
-    case 8:
-      return [
-        {
-          title: "Wallet",
-          children: [
-            {
-              path: "/dapp/investor/tokens/mint",
-              title: "Mint EVERUSD",
-            },
-            {
-              path: "/dapp/investor/tokens/burn",
-              title: "Burn EVERUSD",
-            },
-          ],
-        },
-      ];
-    case 2:
-      return [
-        {
-          path: "/dapp/custodian/requests",
-          title: "Requests",
-        },
-        {
-          title: "Finance",
-          children: [
-            {
-              path: "/dapp/custodian/tokens/confirm",
-              title: "Confirm Mint/Burn",
-            },
-            {
-              path: "/dapp/custodian/tokens/decline",
-              title: "Decline Mint/Burn",
-            },
-          ],
-        },
-        {
-          path: "/dapp/custodian/reporting",
-          title: "Reporting",
-        }
-      ];
-
-    case 256:
-      return [
-        {
-          title: "Assets",
-          children: [
-            {
-              path: "/dapp/project_owner/assets/projects",
-              title: "My Assets",
-            },
-            {
-              path: "/dapp/project_owner/sign/projects",
-              title: "Sign",
-            },
-          ],
-        },
-      ];
-    case 512:
-      return [
-        {
-          title: "Assets",
-          children: [
-            {
-              path: "/dapp/auditor_cc/sign/projects",
-              title: "Sign",
-            },
-          ],
-        },
-      ];
-
-    case 1024:
-      return [
-        {
-          title: "Assets",
-          children: [
-            {
-              path: "/dapp/standard_cc/sign/projects",
-              title: "Sign",
-            },
-          ],
-        },
-      ];
-
-    case 4096:
-      return [
-        {
-          title: "Assets",
-          children: [
-            {
-              path: "/dapp/registry_cc/sign/projects",
-              title: "Sign",
-            },
-          ],
-        },
-      ];
-    default:
-      return [];
-  }
-};
-
 const Layout = ({ children }) => {
   const location = useNavigate();
 
   let routes = [];
 
-  const { role } = getCurrentUser();
-  if (role) {
+  const { address } = getCurrentUser();
+  if (address) {
     routes = [
       {
         key: "profile",
@@ -168,20 +35,9 @@ const Layout = ({ children }) => {
 
   let siderRoutes = [
     {
-      path: "/",
-      title: "Home",
-      disabled: true,
-    },
-    {
-      path: "/dapp/events",
-      title: "Events",
-      disabled: true,
-    },
-    {
       path: "/dapp/assets",
       title: "Assets"
-    },
-    ...getRoutesByRole(role),
+    }
   ];
 
   routes = routes.map(item => {
@@ -210,7 +66,7 @@ const Layout = ({ children }) => {
             </Link>
           </div>
           <div className={styles.navWrapper}>
-            {!role && (
+            {!address && (
               <div>
                 <Link to="/login">
                   <Button className={styles.navButton} type="primary">
@@ -231,7 +87,7 @@ const Layout = ({ children }) => {
         </div>
       </Header>
       <BaseLayout className={styles.contentLayout}>
-        {!!role && (
+        {!!address && (
           <Sider theme="light" className={styles.sider}>
             <MenuView
               theme="light"

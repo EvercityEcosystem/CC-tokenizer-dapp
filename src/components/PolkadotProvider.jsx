@@ -16,11 +16,6 @@ const reducer = (state, action) => {
         ...state,
         injector: action?.payload,
       };
-    case "setTimeStep":
-      return {
-        ...state,
-        timeStep: action?.payload,
-      };
     default:
       throw new Error("Action not found");
   }

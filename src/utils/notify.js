@@ -1,5 +1,8 @@
+import {notification} from "antd";
+
 const transactionCallback = (message, cb) =>
-  ({ status }) => {
+  (info) => {
+    const { status } = info;
     if (status.isInBlock) {
       notification.success({
         message,
@@ -15,7 +18,7 @@ const transactionCallback = (message, cb) =>
         message,
         description: "Block finalized",
       });
-      cb && cb();
+      cb && cb(info);
     }
   };
 

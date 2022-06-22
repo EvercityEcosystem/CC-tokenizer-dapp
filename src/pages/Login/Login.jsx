@@ -49,13 +49,12 @@ const Login = () => {
 
   const handleAccountSubmit = async values => {
     const { address } = values;
-    const { roles } = await accountRegistry(address);
+    // const { roles } = await accountRegistry(address);
 
-    if (roles.length === 1) {
-      saveCurrentUser({address, role: roles[0]});
+    // if (roles.length === 1) {
+      saveCurrentUser({address, role: 1});
       navigate("/dapp/profile");
-      return null;
-    }
+    // }
 
   };
 

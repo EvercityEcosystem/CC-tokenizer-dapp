@@ -11,5 +11,4 @@ const useXState = initialState => {
   return [state, updateState, setState];
 };
 
-
 export default useXState;

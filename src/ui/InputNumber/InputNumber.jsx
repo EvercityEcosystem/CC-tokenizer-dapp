@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-
 import { Input } from "antd";
 
 const InputNumber = React.forwardRef(
@@ -8,7 +7,6 @@ const InputNumber = React.forwardRef(
     const [state, setState] = useState(defaultValue);
 
     useEffect(() => setState(defaultValue), [defaultValue]);
-
 
     return (
       <Input
@@ -26,7 +24,6 @@ const InputNumber = React.forwardRef(
     );
   },
 );
-
 
 InputNumber.defaultProps = {
   onChange: () => {},

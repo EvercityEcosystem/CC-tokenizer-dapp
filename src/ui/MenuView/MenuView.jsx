@@ -1,7 +1,8 @@
-import {Link} from "react-router-dom";
-import {Badge, Menu} from "antd";
+import React from "react";
+import { Link } from "react-router-dom";
+import { Badge, Menu } from "antd";
 import styles from "./MenuView.module.less";
-import {get, getOr} from "unchanged";
+import { get, getOr } from "unchanged";
 
 const pickKeys = (keysArr, curState, arrNotation = false) =>
   keysArr.reduce(
@@ -18,7 +19,7 @@ const MenuView = props => {
   const getLink = node => {
     const linkProps = {
       to: node.path,
-      onClick: (node.onClick && (() => node.onClick(node))),
+      onClick: node.onClick && (() => node.onClick(node)),
     };
 
     return (
@@ -33,14 +34,20 @@ const MenuView = props => {
 
     if (children.length) {
       return (
-        <Menu.SubMenu key={node.key || node.title} title={node.title} disabled={node.disabled}>
+        <Menu.SubMenu
+          key={node.key || node.title}
+          title={node.title}
+          disabled={node.disabled}>
           {children.map(renderNode)}
         </Menu.SubMenu>
       );
     }
 
     return (
-      <Menu.Item key={node.key || node.title} icon={node.icon} disabled={node.disabled}>
+      <Menu.Item
+        key={node.key || node.title}
+        icon={node.icon}
+        disabled={node.disabled}>
         {node.badgeCount ? (
           <Badge count={node.badgeCount} offset={[8, 0]} size="small">
             {getLink(node)}

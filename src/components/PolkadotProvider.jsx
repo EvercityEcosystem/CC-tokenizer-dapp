@@ -16,6 +16,16 @@ const reducer = (state, action) => {
         ...state,
         injector: action?.payload,
       };
+    case "setCustodian":
+      return {
+        ...state,
+        custodian: action?.payload,
+      };
+    case "setAssets":
+      return {
+        ...state,
+        assets: action?.payload,
+      };
     default:
       throw new Error("Action not found");
   }

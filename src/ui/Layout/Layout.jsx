@@ -36,8 +36,8 @@ const Layout = ({ children }) => {
   let siderRoutes = [
     {
       path: "/dapp/assets",
-      title: "Assets"
-    }
+      title: "Assets",
+    },
   ];
 
   routes = routes.map(item => {
@@ -99,9 +99,7 @@ const Layout = ({ children }) => {
         )}
         <Content className={styles.content}>{children}</Content>
       </BaseLayout>
-      <Footer className={styles.footer}>
-        © 2022 Evercity PTE LTD
-      </Footer>
+      <Footer className={styles.footer}>© 2022 Evercity PTE LTD</Footer>
     </BaseLayout>
   );
 };

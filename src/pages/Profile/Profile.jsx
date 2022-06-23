@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { message, Statistic } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 
 import { getCurrentUser } from "../../utils/storage";
-import usePolkadot from "../../hooks/usePolkadot";
 
 import styles from "./Profile.module.less";
-import { ROLES } from "../../utils/roles";
+
 import Container from "../../ui/Container/Container";
 
 const Profile = () => {

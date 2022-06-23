@@ -29,13 +29,13 @@ const DEFAULT_MODE = "create";
 export const getOptionValue = obj => Object.values(obj).join("_");
 
 const useFormItems = ({
-                  form,
-                  initialValues,
-                  config,
-                  size = DEFAULT_INPUT_SIZE,
-                  itemClassName,
-                  mode = DEFAULT_MODE,
-                }) => {
+  form,
+  initialValues,
+  config,
+  size = DEFAULT_INPUT_SIZE,
+  itemClassName,
+  mode = DEFAULT_MODE,
+}) => {
   const [state, updateState] = useXState({});
 
   const sectionsIndex = useMemo(() => {
@@ -110,7 +110,6 @@ const useFormItems = ({
           </Upload>
         );
       }
-
 
       if (value.display === "date") {
         return <DatePicker style={{ width: "100%" }} />;

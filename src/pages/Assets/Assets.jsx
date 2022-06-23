@@ -41,7 +41,8 @@ const Assets = () => {
     }
     return (
       polkadotState?.assets?.filter(
-        asset => asset.list_accounts.includes(address) || asset.certificates,
+        asset =>
+          asset.list_accounts.includes(address) || asset.owner === address,
       ) || []
     );
   }, [address, polkadotState, isCustodian]);

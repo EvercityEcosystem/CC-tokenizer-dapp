@@ -4,8 +4,16 @@ import ExternalLink from "../../ui/Link/ExternalLink";
 import Button from "../../ui/Button/Button";
 import styles from "./TableAssets.module.less";
 import Actions from "../../ui/Actions/Actions";
+import classnames from "classnames";
 
-const TableAssets = ({ assets, onMint, onBurn, isCustodian }) => {
+const TableAssets = ({
+  assets,
+  onMint,
+  onBurn,
+  isCustodian,
+  className,
+  onTransfer,
+}) => {
   const columns = [
     {
       title: "ID",
@@ -35,6 +43,14 @@ const TableAssets = ({ assets, onMint, onBurn, isCustodian }) => {
             disabled={Number(asset.supply) === 0}>
             Burn
           </Button>
+          {!isCustodian && (
+            <Button
+              view="action"
+              onClick={() => onTransfer(asset.id)}
+              disabled={Number(asset.balance) === 0}>
+              Transfer
+            </Button>
+          )}
         </Actions>
       ),
     },
@@ -57,7 +73,7 @@ const TableAssets = ({ assets, onMint, onBurn, isCustodian }) => {
   return (
     <Table
       size="small"
-      className={styles.table}
+      className={classnames(styles.table, className)}
       dataSource={assets}
       columns={columns}
     />

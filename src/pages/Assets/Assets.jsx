@@ -9,7 +9,8 @@ import { getCurrentUser } from "../../utils/storage";
 import ExternalLink from "../../ui/Link/ExternalLink";
 import FormMintAsset from "../../components/FormMintAsset/FormMintAsset";
 import FormBurnAsset from "../../components/FormBurnAsset/FormBurmAsset";
-import { FireOutlined } from "@ant-design/icons";
+import { FireOutlined, SendOutlined } from "@ant-design/icons";
+import FormTransferAsset from "../../components/FormTransferAsset/FormTransferAsset";
 
 const Assets = () => {
   const {
@@ -21,6 +22,7 @@ const Assets = () => {
     burnAsset,
     selfBurnAsset,
     isCustodian,
+    transferAsset,
   } = usePolkadot();
 
   const { polkadotState } = useContext(store);
@@ -28,6 +30,7 @@ const Assets = () => {
   const [modal, contextHolder] = Modal.useModal();
   const [formBurn] = Form.useForm();
   const [formMint] = Form.useForm();
+  const [formTransfer] = Form.useForm();
 
   useEffect(() => {
     if (isAPIReady) {
@@ -46,6 +49,7 @@ const Assets = () => {
       ) || []
     );
   }, [address, polkadotState, isCustodian]);
+  console.log(assets);
   const handleRequest = async () => {
     await createNewAsset();
   };
@@ -74,7 +78,7 @@ const Assets = () => {
   const handleBurn = (assetId, accounts) => {
     modal.confirm({
       title: `Burn asset with ID ${assetId}`,
-      icon: <FireOutlined form={formBurn} />,
+      icon: <FireOutlined />,
       onOk: close => {
         formBurn.validateFields().then(() => {
           close();
@@ -87,15 +91,35 @@ const Assets = () => {
           form={formBurn}
           accounts={accounts}
           isCustodian={isCustodian}
-          onFinish={() => {
-            const amount = formBurn.getFieldValue("amount");
+          onFinish={({ amount, account }) => {
             if (isCustodian) {
-              const account = formBurn.getFieldValue("account");
               burnAsset({ id: assetId, account, amount });
             }
             if (!isCustodian) {
               selfBurnAsset({ id: assetId, amount });
             }
+          }}
+        />
+      ),
+    });
+  };
+
+  const handleTransfer = assetId => {
+    modal.confirm({
+      title: `Transfer asset with ID ${assetId}`,
+      icon: <SendOutlined />,
+      onOk: close => {
+        formTransfer.validateFields().then(() => {
+          close();
+          formTransfer.submit();
+        });
+      },
+      onCancel: () => formTransfer.resetFields(),
+      content: (
+        <FormTransferAsset
+          form={formTransfer}
+          onFinish={({ amount, account }) => {
+            transferAsset({ id: assetId, amount, account });
           }}
         />
       ),
@@ -120,17 +144,21 @@ const Assets = () => {
         />
       )}
       <TableAssets
+        className={styles.table}
         assets={assets}
         onMint={handleMint}
         onBurn={handleBurn}
+        onTransfer={handleTransfer}
         isCustodian={isCustodian}
       />
       {contextHolder}
-      <div className={styles.newBtn}>
-        <Button type="primary" onClick={handleRequest} loading={loading}>
-          New asset
-        </Button>
-      </div>
+      {!isCustodian && (
+        <div className={styles.newBtn}>
+          <Button type="primary" onClick={handleRequest} loading={loading}>
+            New asset
+          </Button>
+        </div>
+      )}
     </Container>
   );
 };

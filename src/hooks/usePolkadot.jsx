@@ -236,6 +236,26 @@ const usePolkadot = () => {
     return custodian === address;
   }, [isAPIReady, custodian]);
 
+  const transferAsset = useCallback(
+    async ({ id, account, amount }) => {
+      const { address } = getCurrentUser();
+      try {
+        await api.tx.carbonAssets.transfer(id, account, amount).signAndSend(
+          address,
+          {
+            signer: injector.signer,
+            nonce: -1,
+          },
+          transactionCallback("Transfer carbon asset", () => {
+            fetchAssets();
+          }),
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [api],
+  );
   return {
     initAPI,
     isAPIReady,
@@ -249,6 +269,7 @@ const usePolkadot = () => {
     burnAsset,
     selfBurnAsset,
     isCustodian,
+    transferAsset,
   };
 };
 

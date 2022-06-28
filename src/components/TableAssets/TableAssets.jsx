@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Table } from "antd";
 import ExternalLink from "../../ui/Link/ExternalLink";
 import Button from "../../ui/Button/Button";
@@ -62,11 +62,15 @@ const TableAssets = ({
     },
   ];
 
+  const sortedAssets = useMemo(
+    () => assets.sort((a, b) => Number(a.id) - Number(b.id)),
+    [assets],
+  );
   return (
     <Table
       size="small"
       className={classnames(styles.table, className)}
-      dataSource={assets}
+      dataSource={sortedAssets}
       columns={columns}
     />
   );

@@ -24,6 +24,14 @@ const TableAssets = ({
       dataIndex: "supply",
     },
     {
+      title: "Balance",
+      dataIndex: "balance",
+    },
+    {
+      title: "Certificates",
+      dataIndex: "certificates",
+    },
+    {
       title: "Actions",
       dataIndex: "url",
       width: 300,
@@ -43,33 +51,17 @@ const TableAssets = ({
             disabled={Number(asset.supply) === 0}>
             Burn
           </Button>
-          {!isCustodian && (
-            <Button
-              view="action"
-              onClick={() => onTransfer(asset.id)}
-              disabled={Number(asset.balance) === 0}>
-              Transfer
-            </Button>
-          )}
+          <Button
+            view="action"
+            onClick={() => onTransfer(asset.id)}
+            disabled={Number(asset.balance) === 0}>
+            Transfer
+          </Button>
         </Actions>
       ),
     },
   ];
 
-  if (!isCustodian) {
-    columns.splice(
-      1,
-      0,
-      {
-        title: "Balance",
-        dataIndex: "balance",
-      },
-      {
-        title: "Certificates",
-        dataIndex: "certificates",
-      },
-    );
-  }
   return (
     <Table
       size="small"

@@ -49,7 +49,7 @@ const Assets = () => {
       ) || []
     );
   }, [address, polkadotState, isCustodian]);
-  console.log(assets);
+
   const handleRequest = async () => {
     await createNewAsset();
   };
@@ -152,13 +152,11 @@ const Assets = () => {
         isCustodian={isCustodian}
       />
       {contextHolder}
-      {!isCustodian && (
-        <div className={styles.newBtn}>
-          <Button type="primary" onClick={handleRequest} loading={loading}>
-            New asset
-          </Button>
-        </div>
-      )}
+      <div className={styles.newBtn}>
+        <Button type="primary" onClick={handleRequest} loading={loading}>
+          New asset
+        </Button>
+      </div>
     </Container>
   );
 };

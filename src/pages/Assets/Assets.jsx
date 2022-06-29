@@ -53,7 +53,6 @@ const Assets = () => {
   const handleRequest = async () => {
     await createNewAsset();
   };
-
   const handleMint = assetId => {
     modal.confirm({
       onOk: close => {
